@@ -1,5 +1,9 @@
  @import "tailwindcss";
 @import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 /* Enable dark mode using the recommended selector (Tailwind v4/Flowbite) */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -122,5 +126,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
   }
 }
