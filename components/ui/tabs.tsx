@@ -1,5 +1,6 @@
 import React, { ReactNode, useState, createContext, useContext } from "react";
 
+// Context type and provider
 interface TabsContextType {
   activeTab: string;
   setActiveTab: (value: string) => void;
@@ -7,6 +8,7 @@ interface TabsContextType {
 
 const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
+// Tabs root component
 interface TabsProps {
   defaultValue: string;
   children: ReactNode;
@@ -22,6 +24,7 @@ export function Tabs({ defaultValue, children }: TabsProps) {
   );
 }
 
+// TabsList
 interface TabsListProps {
   children: ReactNode;
   className?: string;
@@ -31,6 +34,7 @@ export function TabsList({ children, className = "" }: TabsListProps) {
   return <div className={`flex space-x-4 border-b ${className}`}>{children}</div>;
 }
 
+// TabsTrigger
 interface TabsTriggerProps {
   value: string;
   children: ReactNode;
@@ -44,7 +48,6 @@ export function TabsTrigger({ value, children, className = "" }: TabsTriggerProp
   }
 
   const { activeTab, setActiveTab } = context;
-
   const isActive = activeTab === value;
 
   return (
@@ -58,4 +61,24 @@ export function TabsTrigger({ value, children, className = "" }: TabsTriggerProp
       {children}
     </button>
   );
+}
+
+// ✅ TabsContent component
+interface TabsContentProps {
+  value: string;
+  children: ReactNode;
+  className?: string;
+}
+
+export function TabsContent({ value, children, className = "" }: TabsContentProps) {
+  const context = useContext(TabsContext);
+  if (!context) {
+    throw new Error("TabsContent must be used within a Tabs component");
+  }
+
+  const { activeTab } = context;
+
+  if (activeTab !== value) return null;
+
+  return <div className={`mt-4 ${className}`}>{children}</div>;
 }
