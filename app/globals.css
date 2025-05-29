@@ -1,7 +1,11 @@
  @import "tailwindcss";
 @import "tw-animate-css";
-@import "tailwindcss/preflight";
 @tailwind utilities;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+
 
 
 /* Enable dark mode using the recommended selector (Tailwind v4/Flowbite) */
