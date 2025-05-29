@@ -1,14 +1,32 @@
-"use client"
-import All_videos from '@/components/concept_videos/concept_videos'
-import React from 'react'
-const ConceptVideos = () => {
- 
-  return (
-    <div className='flex  bg-[#E6E6ED]'>
-        {/* <div className=' bg-[#FFFFFF] w-[305px] h-[933px]'></div> */}
-       <All_videos/>
-    </div>
-  )
-}
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import DashboardPages from "@/components/student_admin/dashboard";
+import Navbar from "@/components/student_admin/Navbar";
+import Sidebar from "@/components/student_admin/Sidebar";
+import All_videos from "@/components/concept_videos/concept_videos";
 
-export default ConceptVideos
+export default async function Dashboard() {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+
+  return (
+    <div className="flex h-screen overflow-hidden">
+      {/* Fixed Sidebar */}
+      <div className="w-[305px] hidden md:block fixed top-0 left-0 h-full z-30">
+        <Sidebar/>
+      </div>
+
+      {/* Main Content Wrapper */}
+      <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
+        <Navbar />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
+          <All_videos />
+        </main>
+      </div>
+    </div>
+  );
+}

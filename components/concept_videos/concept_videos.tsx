@@ -69,7 +69,7 @@ const All_videos = () => {
     setOpenAddVideo(data)
   }
   return (
-    <div className='flex flex-col w-full mt-[20px] bg-[#E6E6ED] mx-[20px]'>
+    <div className='w-full p-[20px] bg-[#E6E6ED]'>
       <div className='flex flex-col md:flex-row justify-between'>
         <h1 className='text-[30px] font-[600]'>Concept Video</h1>
         <button className='flex gap-[8px] items-center justify-center max-w-[201px] h-[45px] rounded-[12px] bg-[#0048B0] text-white text-[16px] px-[32px] py-[16px] text-center' onClick={()=>setOpenAddVideo(true)}><span>+</span> Add New Video</button>

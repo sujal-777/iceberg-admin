@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -11,24 +12,19 @@ import {
   X,
 } from "lucide-react";
 
-interface SidebarProps {
-  activeItem: string;
-  onItemSelect: (item: string) => void;
-}
-
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "candidate-management", label: "Candidate Management", icon: Users },
-  { id: "test-series", label: "Test Series", icon: FileText },
-  { id: "concept-video", label: "Concept Video", icon: Play },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/Studentdashboard" },
+  { id: "candidate-management", label: "Candidate Management", icon: Users, path: "/candidates" },
+  { id: "test-series", label: "Test Series", icon: FileText, path: "/test-series" },
+  { id: "concept-video", label: "Concept Video", icon: Play, path: "/ConceptVideos" },
 ];
 
-export default function Sidebar({ activeItem, onItemSelect }: SidebarProps) {
+export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
-  
-
 
   return (
     <>
@@ -44,51 +40,49 @@ export default function Sidebar({ activeItem, onItemSelect }: SidebarProps) {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } md:block fixed md:relative z-20 max-w-[305px] h-[933px] top-[33px] left-[25px] bg-gray-100 rounded-[20px]  pt-[11px] pb-[11px] bg-whiteflex flex-col transition-transform ease-in-out duration-300` }
+        } md:block fixed md:relative z-20 w-[305px] h-screen top-0 left-0 bg-white rounded-none md:rounded-[20px] shadow-md flex flex-col justify-between transition-transform ease-in-out duration-300`}
       >
-        {/* Logo */}
-        <div className=" max-w-[305px] max-h-[54px] gap-2  rounded-lg">
-          <h1 className="font-space-grotesk font-bold text-[36px] leading-[1] tracking-normal text-center  bg-gradient-to-r from-[#00BBFF] to-[#0048B0] bg-clip-text text-transparent">
-            ICEBERG
-          </h1>
-        </div>
+        {/* Top Section */}
+        <div>
+          {/* Logo */}
+          <div className="py-6 px-4">
+            <h1 className="font-space-grotesk font-bold text-[36px] text-center bg-gradient-to-r from-[#00BBFF] to-[#0048B0] bg-clip-text text-transparent">
+              ICEBERG
+            </h1>
+          </div>
 
-        {/* Menu */}
-        <nav className="flex-1 overflow-hidden px-4 py-6 ">
-          <ul className="space-y-2 font-inter">
-            {menuItems.map(({ id, label, icon: Icon }) => {
-              const isActive = activeItem === id;
+          {/* Menu */}
+          <nav className="px-4 space-y-2 font-inter">
+            {menuItems.map(({ id, label, icon: Icon, path }) => {
+              const isActive = pathname === path;
               return (
-                <li key={id}>
-                  <button
-                    onClick={() => {
-                      onItemSelect(id);
-                      setIsOpen(false); // close on mobile select
-                    }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                      isActive
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "text-black hover:bg-[#0048B0]"
-                    }`}
-                  >
-                    <Icon
-                      className={`h-5 w-5 ${
-                        isActive ? "text-white" : "text-"
-                      }`}
-                    />
-                    <span className="font-medium">{label}</span>
-                  </button>
-                </li>
+                <button
+                  key={id}
+                  onClick={() => {
+                    router.push(path);
+                    setIsOpen(false); // close on mobile
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "text-black hover:bg-[#0048B0] hover:text-white"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="font-medium">{label}</span>
+                </button>
               );
             })}
-          </ul>
-        </nav>
+          </nav>
+        </div>
 
-        {/* Support Center */}
-        <div className="max-w-[254px] h-[40px] rounded-[10px] pt-[9px] pr-[21px] pb-[9px] pl-[21px] flex gap-[10px] mt-[550px]">
-          <button className=" max-w-[212px]  h-[22px] gap-[11px] flex items-center  px-4 py-3 text-black hover:bg-gray-200 rounded-lg transition-all duration-200">
+        {/* Bottom Section */}
+        <div className="px-4 py-6">
+          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200">
             <Headphones className="h-5 w-5 text-black" />
-            <span className=" font-inter font-semibold text-[16px] leading-[1] tracking-normal font-inter">Support Center</span>
+            <span className="font-inter font-semibold text-[16px]">
+              Support Center
+            </span>
           </button>
         </div>
       </div>

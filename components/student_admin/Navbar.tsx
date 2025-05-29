@@ -57,7 +57,7 @@ const Navbar: FC = () => {
     <nav className="w-full bg-[#F6F7FA] flex justify-center">
       <div className="w-[1513px] h-[65px] bg-white rounded-[10px] border border-[#E5E7EB] flex items-center px-[26px] shadow-sm">
         {/* Search Bar */}
-        <div className="w-[464px] h-[45px] top-[10px] rounded-[10px] pt-[13px] pr-[15px] pb-[13px] pl-[15px] gap-[10px] absolute flex border border-[#E5E7EB] px-[15px] py-[13px]">
+        <div className="relative w-[464px] h-[45px] flex border border-[#E5E7EB] rounded-[10px] items-center px-[15px] py-[13px]">
           <FiSearch className="text-gray-400 text-xl rounded-2xl" />
           <input
             type="text"
