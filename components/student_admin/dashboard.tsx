@@ -8,19 +8,16 @@ import TestSeriesOverview from "@/components/student_admin/test-serious-overview
 import QuickAccessTools from "@/components/student_admin/quick-access-tool";
 import CounselingSessions from "@/components/student_admin/counselling-session";
 
-export default function Dashboard() {
+export default function DashboardPages() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="mx-auto max-w-7xl space-y-6">
         <StatCards />
-
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <StudentProgressChart />
           <PerformanceMetricsChart />
         </div>
-
         <TestSeriesOverview />
-
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <QuickAccessTools />
