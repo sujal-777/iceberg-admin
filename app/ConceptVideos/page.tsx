@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import DashboardPages from "@/components/student_admin/dashboard";
+// import DashboardPages from "@/components/student_admin/dashboard";
 import Navbar from "@/components/student_admin/Navbar";
 import Sidebar from "@/components/student_admin/Sidebar";
 import All_videos from "@/components/concept_videos/concept_videos";
