@@ -163,12 +163,12 @@ export default function StudentsManagement() {
           <h1 className="text-3xl font-bold text-gray-900">Students</h1>
           <p className="text-gray-600 mt-1">Manage all students records and enrollment details</p>
         </div>
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        {/* <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-lg">
             <UserPlus className="w-4 h-4 mr-2" />
             Add New Student
           </Button>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
 
       {/* Filters Section */}
