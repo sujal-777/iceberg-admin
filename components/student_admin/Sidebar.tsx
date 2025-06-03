@@ -10,13 +10,17 @@ import {
   Headphones,
   Menu,
   X,
+  GraduationCap,
+  LaptopMinimalCheck,
 } from "lucide-react";
 
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/Studentdashboard" },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/StudentDashboard" },
   { id: "candidate-management", label: "Candidate Management", icon: Users, path: "/candidates" },
   { id: "test-series", label: "Test Series", icon: FileText, path: "/test-series" },
   { id: "concept-video", label: "Concept Video", icon: Play, path: "/ConceptVideos" },
+  { id: "counseling", label: "Counseling Session", icon: GraduationCap, path: "/counseling" },
+  { id: "jobApplication", label : "Job Application", icon: LaptopMinimalCheck, path: "jobApplication" }
 ];
 
 export default function Sidebar() {

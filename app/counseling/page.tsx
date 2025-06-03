@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 // import DashboardPages from "@/components/student_admin/dashboard";
 import Navbar from "@/components/student_admin/Navbar";
 import Sidebar from "@/components/student_admin/Sidebar";
-import StudentsManagement from "@/components/candidates-page/CandidatesList";
+import CounselingPage from "@/components/CounselingPage/CounselingList";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ export default async function Dashboard() {
       <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
         <Navbar />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
-          <StudentsManagement />
+          <CounselingPage />
         </main>
       </div>
     </div>
