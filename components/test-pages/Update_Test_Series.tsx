@@ -1,13 +1,24 @@
-"use client"
-import React, { useState,useEffect } from 'react'
+'use client'
+import React from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-const Create_new_test_series = () => {
-  const router=useRouter();
-  const [exam,setExam]=useState([]);
-  const [category,setCategory]=useState([]);
-  const [formData,setFormData]=useState({
-    categoryId:"",
+import { useState,useEffect } from 'react';
+type itemToEdit={
+    _id: string;
+     categoryId:string,
+    title: string,
+    examId: string,
+    // questions:'',
+    duration: string,
+    createdAt: string,
+    // marks:'',
+    status:string,
+    description:string,
+}
+const Update_Test_Series = ({ data }: { data:itemToEdit}) => {
+    const [exam,setExam]=useState([]);
+      const [category,setCategory]=useState([]);
+    const [formData, setFormData] = useState({
+     categoryId:"",
     title: "",
     examId: "",
     // questions:'',
@@ -16,54 +27,9 @@ const Create_new_test_series = () => {
     // marks:'',
     status:'',
     description:'',
-  });
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-
-    const dataToSend = {
-    ...formData,
-    duration: Number(formData.duration),
-    createdAt:new Date().toISOString()
-  };
-
   
-    try {
-    const res = await fetch("http://localhost:5000/admin/test-series", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    });
-    console.log('form data:',dataToSend)
-    const data = await res.json();
-    console.log("Response from API:", data);
-    if(res.ok){
-      alert('new test series created')
-    }
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    alert('error in creating test series')
-  }
-  // if (!res.ok) {
-  //     const text = await res.text(); // get raw response text for debugging
-  //     console.error("Server error response:", text);
-  //     throw new Error(`Server error: ${res.status}`);
-  //   }
+});
 
-  //   const jsondata = await res.json();
-  //   console.log("Created test series:", jsondata);
-  // } catch (error) {
-  //   console.error("Error submitting form:", error);
-  // }
-  };
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -79,6 +45,8 @@ useEffect(() => {
 
   fetchData();
 }, []);
+
+
 useEffect(() => {
   const fetchCategoryData = async () => {
     try {
@@ -94,15 +62,70 @@ useEffect(() => {
 
 fetchCategoryData ();
 }, []);
+
+
   
+  useEffect(() => {
+    console.log('data upd:',data);
+    if (data) {
+      setFormData({
+       
+         categoryId:data.categoryId || "",
+    title: data.title || "",
+    examId: data.examId || "",
+    // questions:'',
+    duration: data.duration || "",
+    createdAt: data.createdAt || "",
+    // marks:'',
+    status:data.status || "",
+    description:data.description || "",
+      });
+    }
+  }, [data]);
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+     e.preventDefault();
+    const dataToSend = {
+    ...formData,
+    duration: Number(formData.duration),
+    createdAt:new Date().toISOString(),
+     _id: data._id
+  };
+    try {
+      const res = await fetch(`http://localhost:5000/admin/test-series/${data._id}`, {
+        method: 'PUT', // or PATCH
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!res.ok){
+        throw new Error('Update failed');
+      
+      } 
+      const jsondata = await res.json();
+      console.log('Updated:', jsondata);
+      alert('successfully updated')
+    } catch (err) {
+      console.error(err);
+       alert('error in updating the test series')
+    }
+}
   return (
     <div>
         <div>
-            <h1 className='text-[25px] font-[600]'>Create New Test Series</h1>
+            <h1 className='text-[25px] font-[600]'>Update Test Series</h1>
             <p className='text-[25px] font-[600]'>Basic Information</p>
         </div>
         <div className='mt-10'>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleUpdate}>
                 <div className='bg-white flex flex-col  gap-[20px] rounded-[20px] p-[20px]'>
                      <label className='text-[20px] font-[500] flex flex-col gap-[10px]'>Test series Name<input type='text' name="title" value={formData.title} onChange={handleChange} placeholder='e.g. Principles and Practice of Accounting Mock Test Series'  className='max-w-[1312px] text-[18px] font-normal h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label>
                     
@@ -114,7 +137,8 @@ fetchCategoryData ();
                 <select
                   id="select" name='categoryId' value={formData.categoryId} onChange={handleChange} required
                   className="block max-w-[650px] h-[45px] p-2 border border-black rounded-[10px]  focus:ring-[#0048B0] focus:border-blue-500" required>
-                  {category.map((option, idx) => (
+                  <option value="">Select a category</option>
+                  {category?.map((option, idx) => (
                     <option key={idx}  value={option._id} className=''>
                       {option.name}
                     </option>
@@ -147,13 +171,13 @@ fetchCategoryData ();
             <label className='text-[20px] font-[500] flex flex-col gap-[10px]'>Description<textarea name="description" value={formData.description} onChange={handleChange} placeholder='Provide a brief description of this test series....'  className='max-w-[1312px] text-[18px] font-normal h-[126px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></textarea></label>
                 </div>
                <div className="flex justify-end gap-[10px] mt-[20px] '>">
-        <button type="submit" className="w-[112px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-white bg-[#0048B0]" >Create</button>
+        <button type="submit" className="w-[112px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-white bg-[#0048B0]" >Update</button>
        <Link href='/test-series'><button  className="w-[130px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-[#0048B0] ">Cancel</button></Link>
       </div>
             </form>
         </div>
     </div>
-  )
-}
+  );
+};
 
-export default Create_new_test_series
+export default Update_Test_Series

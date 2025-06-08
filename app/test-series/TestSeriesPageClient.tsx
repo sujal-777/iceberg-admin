@@ -6,18 +6,18 @@ import Sidebar from "@/components/student_admin/Sidebar";
 import TestSeriesDashboard from "@/components/test-pages/testList";
 
 export default function TestSeriesPageClient() {
-  const [newTestDetails, setNewTestDetails] = useState(null);
+  // const [newTestDetails, setNewTestDetails] = useState(null);
 
-  useEffect(() => {
-    const data = localStorage.getItem("formData");
-    if (data) {
-      setNewTestDetails(JSON.parse(data));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const data = localStorage.getItem("formData");
+  //   if (data) {
+  //     setNewTestDetails(JSON.parse(data));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    console.log("new test series data", newTestDetails);
-  }, [newTestDetails]);
+  // useEffect(() => {
+  //   console.log("new test series data", newTestDetails);
+  // }, [newTestDetails]);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -30,7 +30,7 @@ export default function TestSeriesPageClient() {
       <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
         <Navbar />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
-          <TestSeriesDashboard data={newTestDetails}/>
+          <TestSeriesDashboard />
         </main>
       </div>
     </div>

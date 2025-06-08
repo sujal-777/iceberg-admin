@@ -11,72 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-// Mock data
-// const testSeriesData = [
-//   {
-//     id: 1,
-//     subject: "Corporate Accounting Mock Test",
-//     code: "CA-CORP-2025-01",
-//     exam: "CA Intermediate",
-//     questions: 75,
-//     duration: "3 hours",
-//     createdDate: "May 1, 2025",
-//   },
-//   {
-//     id: 2,
-//     subject: "Company Law Practice Test",
-//     code: "CS-LAW-2025-02",
-//     exam: "CS Executive",
-//     questions: 60,
-//     duration: "2 hours",
-//     createdDate: "April 15, 2025",
-//   },
-//   {
-//     id: 3,
-//     subject: "Cost Accounting Full Test",
-//     code: "CMA-COST-2025-01",
-//     exam: "CMA Intermediate",
-//     questions: 100,
-//     duration: "3.5 hours",
-//     createdDate: "March 10, 2025",
-//   },
-//   {
-//     id: 4,
-//     subject: "Advanced Auditing Mock Exam",
-//     code: "CA-AUDIT-2025-03",
-//     exam: "CA Final",
-//     questions: 80,
-//     duration: "3 hours",
-//     createdDate: "February 5, 2025",
-//   },
-//   {
-//     id: 5,
-//     subject: "Financial Management Quiz",
-//     code: "CS-FIN-2025-01",
-//     exam: "CS Professional",
-//     questions: 30,
-//     duration: "45 minutes",
-//     createdDate: "January 20, 2025",
-//   },
-//   {
-//     id: 6,
-//     subject: "Strategic Management Full Test",
-//     code: "CMA-STRAT-2025-01",
-//     exam: "CMA Final",
-//     questions: 90,
-//     duration: "3 hours",
-//     createdDate: "December 15, 2024",
-//   },
-//   {
-//     id: 7,
-//     subject: "Taxation Fundamentals Test",
-//     code: "CA-TAX-2025-01",
-//     exam: "CA Foundation",
-//     questions: 50,
-//     duration: "2 hours",
-//     createdDate: "November 5, 2024",
-//   },
-// ]
+
 
 const statsData = [
   {
@@ -120,98 +55,80 @@ const chartData = {
     { subject: "CMA", score: 78 },
   ],
 }
-type newTestDetails = {
-  subject: string;
-  level:string;
-  exam: string;
-  questions: string;
-  duration: string;
-  createdDate: string;
-  passmarks:string;
-  marks:string;
-  description:string;
-  code:string;
-};
 
-export default function TestSeriesDashboard({ data }: { data:newTestDetails}) {
+export default function TestSeriesDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [courseFilter, setCourseFilter] = useState("all")
   const [levelFilter, setLevelFilter] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
-  const [testSeriesData,setTestSeriesData]=useState([
-  {
-    id: 1,
-    subject: "Corporate Accounting Mock Test",
-    code: "CA-CORP-2025-01",
-    exam: "CA Intermediate",
-    questions: 75,
-    duration: "3 hours",
-    createdDate: "May 1, 2025",
-  },
-  {
-    id: 2,
-    subject: "Company Law Practice Test",
-    code: "CS-LAW-2025-02",
-    exam: "CS Executive",
-    questions: 60,
-    duration: "2 hours",
-    createdDate: "April 15, 2025",
-  },
-  {
-    id: 3,
-    subject: "Cost Accounting Full Test",
-    code: "CMA-COST-2025-01",
-    exam: "CMA Intermediate",
-    questions: 100,
-    duration: "3.5 hours",
-    createdDate: "March 10, 2025",
-  },
-  {
-    id: 4,
-    subject: "Advanced Auditing Mock Exam",
-    code: "CA-AUDIT-2025-03",
-    exam: "CA Final",
-    questions: 80,
-    duration: "3 hours",
-    createdDate: "February 5, 2025",
-  },
-  {
-    id: 5,
-    subject: "Financial Management Quiz",
-    code: "CS-FIN-2025-01",
-    exam: "CS Professional",
-    questions: 30,
-    duration: "45 minutes",
-    createdDate: "January 20, 2025",
-  },
-  {
-    id: 6,
-    subject: "Strategic Management Full Test",
-    code: "CMA-STRAT-2025-01",
-    exam: "CMA Final",
-    questions: 90,
-    duration: "3 hours",
-    createdDate: "December 15, 2024",
-  },
-  {
-    id: 7,
-    subject: "Taxation Fundamentals Test",
-    code: "CA-TAX-2025-01",
-    exam: "CA Foundation",
-    questions: 50,
-    duration: "2 hours",
-    createdDate: "November 5, 2024",
-  },
-])
+  const [testSeriesData,setTestSeriesData]=useState([]);
+  const [testSeriesExamData,setTestSeriesExamData]=useState([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/admin/test-series');
+      const data = await res.json();
+      console.log('Fetched test series Data:', data);
+      setTestSeriesData(data);
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+useEffect(() => {
+  const fetchExamData = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/admin/exams');
+      const data = await res.json();
+      console.log('Fetched exam Data:', data);
+      setTestSeriesExamData(data);
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  fetchExamData();
+}, []);
+
+  const deleteTestSeriesItem = async (id: string) => {
+  try {
+    const res = await fetch(`http://localhost:5000/admin/test-series/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+       
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to delete');
+    }
+
+    const data = await res.json();
+    alert('Are you sure to delete this test series')
+    console.log('Deleted:', data);
+
+  } catch (error) {
+    console.error('Error deleting item:', error);
+  }
+};
+
+  
   const itemsPerPage = 7
 const router=useRouter();
   const filteredData = testSeriesData.filter((item) => {
-    if (!item || !item.subject || !item.exam) return false;
+    if (!item || !item.title || !item.examId) return false;
     const matchesSearch =
-      item.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.exam.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCourse = courseFilter === "all" || item.exam.toLowerCase().includes(courseFilter.toLowerCase())
-    const matchesLevel = levelFilter === "all" || item.exam.toLowerCase().includes(levelFilter.toLowerCase())
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.examId.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCourse = courseFilter === "all" || item.examId.toLowerCase().includes(courseFilter.toLowerCase())
+    const matchesLevel = levelFilter === "all" || item.examId.toLowerCase().includes(levelFilter.toLowerCase())
 
     return matchesSearch && matchesCourse && matchesLevel
   })
@@ -240,31 +157,21 @@ const router=useRouter();
       },
     },
   }
-  useEffect(()=>{
-    if (data) {
-    const formatted = {
-      id: testSeriesData.length + 1, // you can adjust this
-      subject: data.subject,
-      code: data.code,
-      exam: data.exam,
-      questions: parseInt(data.questions),
-      duration: data.duration,
-      createdDate: data.createdDate,
-    };
-    
-    setTestSeriesData(prev => [...prev,formatted]);
-    console.log(formatted);
-    }
-  },[data])
-const openTestSeriespage=(index: number)=>{
-  localStorage.setItem('testseriesData', JSON.stringify(testSeriesData[index]));
-   router.push('/test-series/Single_test_series_details')
+  const handleEditTestSeries=(id:string)=>{
+    const itemToEdit=testSeriesData.find(item => item._id === id);
+    localStorage.setItem('itemToEdit',JSON.stringify(itemToEdit));
+    router.push('/test-series/Update_test_series')
+  }
+const openTestSeriespage=(id: string)=>{
+  const selectedTestSeries = testSeriesData.find(item => item._id === id);
+if (selectedTestSeries) {
+    localStorage.setItem('testseriesData', JSON.stringify(selectedTestSeries));
+    router.push('/test-series/Single_test_series_details');
+  } else {
+    console.error("Test series not found for ID:", id);
+  }
 }
-const handleDeletetestSeries=(index: number)=>{
-  const updatedData=testSeriesData.filter(item=>item.id!==index)
-  setTestSeriesData(updatedData);
 
-}
   return (
     <motion.div
       className="p-6 space-y-6 bg-gray-50 min-h-screen"
@@ -371,7 +278,7 @@ const handleDeletetestSeries=(index: number)=>{
               <AnimatePresence>
                 {paginatedData.map((item, index) => (
                   <motion.tr
-                    key={item.id}
+                    key={index}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
@@ -380,18 +287,22 @@ const handleDeletetestSeries=(index: number)=>{
                   >
                     <TableCell>
                       <div>
-                        <div className="font-medium text-gray-900">{item.subject}</div>
-                        <div className="text-sm text-gray-500">{item.code}</div>
+                        <div className="font-medium text-gray-900">{item.title}</div>
+                        <div className="text-sm text-gray-500">{}</div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    {testSeriesExamData.map((ex,idx)=>(
+                      item.examId==ex._id &&
+                      <TableCell>
                       <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                        {item.exam}
+                        {ex.title}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{item.questions}</TableCell>
+                    ) )}
+                    
+                    <TableCell className="font-medium"></TableCell>
                     <TableCell>{item.duration}</TableCell>
-                    <TableCell>{item.createdDate}</TableCell>
+                    <TableCell>{item.createdAt}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <motion.button
@@ -399,21 +310,21 @@ const handleDeletetestSeries=(index: number)=>{
                           whileTap={{ scale: 0.9 }}
                           className="p-1 hover:bg-green-100 rounded transition-colors duration-200"
                         >
-                          <Plus className="w-4 h-4 text-green-600" onClick={()=>openTestSeriespage(index)}/>
+                          <Plus className="w-4 h-4 text-green-600" onClick={()=>openTestSeriespage(item._id)}/>
                         </motion.button>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           className="p-1 hover:bg-blue-100 rounded transition-colors duration-200"
                         >
-                          <Edit className="w-4 h-4 text-blue-600" />
+                          <Edit className="w-4 h-4 text-blue-600" onClick={()=>handleEditTestSeries(item._id)} />
                         </motion.button>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           className="p-1 hover:bg-red-100 rounded transition-colors duration-200"
                         >
-                          <Trash2 className="w-4 h-4 text-red-600" onClick={()=>handleDeletetestSeries(item.id)}/>
+                          <Trash2 className="w-4 h-4 text-red-600" onClick={()=>deleteTestSeriesItem(item._id)}/>
                         </motion.button>
                       </div>
                     </TableCell>
