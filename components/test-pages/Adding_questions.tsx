@@ -83,7 +83,7 @@ const deleteQuestion = async (id: string) => {
 };
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    let file = e.target.files?.[0];
     // const fileList = Array.from(file);
     // console.log('Selected files:', fileList);
 
@@ -95,15 +95,38 @@ const deleteQuestion = async (id: string) => {
     } else {
       alert("Please upload a valid PDF file.");
     }
-    // try{
-    //   const res= fetch('http://localhost:5000/admin/question-papers',{
-    //     method:'POST',
-    //      headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   })
-    // }
+    
   };
+  const handleUpload = async () => {
+   
+     const formData = new FormData();
+  formData.append('questionFile', selectedFiles[0]);
+  formData.append('title', selectedFiles[0].name.replace(/\.[^/.]+$/, ""));
+  formData.append('examId', data.examId);
+
+  // Instead of console.log(formData), iterate:
+  for (const [key, val] of formData.entries()) {
+    console.log(key, val);
+  }
+    try {
+      const res = await fetch('http://localhost:5000/admin/question-papers', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await res.json();
+      console.log('Success:', data);
+      alert('Question paper uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Upload failed');
+    }
+  };
+
   useEffect(() => {
    console.log('files:',selectedFiles)
   }, [selectedFiles])
@@ -158,7 +181,7 @@ setOpenUpdateQuestion(false);
                             </div>
                             <div>
                             <p>Total Marks</p>
-                            <p>200 marks</p>
+                            <p>200</p>
                             </div>
                         </div>
             </div>
@@ -252,6 +275,10 @@ setOpenUpdateQuestion(false);
             height="600px"
             className="border rounded"
           ></iframe>
+            <div className="flex justify-end gap-[10px] mt-[20px]">
+        <button type="submit" className="w-[112px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-white bg-[#0048B0]" onClick={handleUpload} >Upload</button>
+        <button  className="w-[130px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-[#0048B0]" >Cancel</button>
+      </div> 
         </div>
       )}
             </div>
