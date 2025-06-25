@@ -1,12 +1,13 @@
+import AddBlogForm from "@/components/blogParts/add-blog-form"
+// import BlogManagement from "@/components/blogParts/blog-management"
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 // import DashboardPages from "@/components/student_admin/dashboard";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-import CounselingPage from "@/components/CounselingPage/CounselingList";
 
-export default async function Dashboard() {
+export default async function AddBlogPAGE() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
@@ -24,7 +25,7 @@ export default async function Dashboard() {
       <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
         <Navbar />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
-          <CounselingPage />
+          <AddBlogForm />
         </main>
       </div>
     </div>

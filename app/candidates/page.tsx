@@ -2,8 +2,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 // import DashboardPages from "@/components/student_admin/dashboard";
-import Navbar from "@/components/student_admin/Navbar";
-import Sidebar from "@/components/student_admin/Sidebar";
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
 import StudentsManagement from "@/components/candidates-page/CandidatesList";
 
 export default async function Dashboard() {

@@ -2,8 +2,8 @@
 import Update_Test_Series from '@/components/test-pages/Update_Test_Series'
 import React from 'react'
 import { useState ,useEffect} from 'react';
-import Sidebar from '@/components/student_admin/Sidebar'
-import Navbar from '@/components/student_admin/Navbar'
+import Sidebar from '@/components/Sidebar'
+import Navbar from '@/components/Navbar'
 const page = () => {
     const [testSeries,setTestSeries] = useState(null);
       useEffect(() => {

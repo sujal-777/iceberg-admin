@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/student_admin/Navbar";
-import Sidebar from "@/components/student_admin/Sidebar";
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
 import TestSeriesDashboard from "@/components/test-pages/testList";
 
 export default function TestSeriesPageClient() {

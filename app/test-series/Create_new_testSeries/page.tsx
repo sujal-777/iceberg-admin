@@ -1,7 +1,7 @@
 import Create_new_test_series from '@/components/test-pages/Create_new_test_series'
 import React from 'react'
-import Sidebar from '@/components/student_admin/Sidebar'
-import Navbar from '@/components/student_admin/Navbar'
+import Sidebar from '@/components/Sidebar'
+import Navbar from '@/components/Navbar'
 const page = () => {
   return (
      <div className="flex h-screen overflow-hidden">

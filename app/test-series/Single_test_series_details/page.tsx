@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import Sidebar from '@/components/student_admin/Sidebar'
-import Navbar from '@/components/student_admin/Navbar'
+import Sidebar from '@/components/Sidebar'
+import Navbar from '@/components/Navbar'
 import Adding_questions from '@/components/test-pages/Adding_questions'
 import { useEffect } from 'react'
 const page = () => {

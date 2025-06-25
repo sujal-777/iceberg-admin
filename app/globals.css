@@ -1,4 +1,4 @@
- @import "tailwindcss";
+@import "tailwindcss";
 @import "tw-animate-css";
 @tailwind utilities;
 @tailwind utilities;
@@ -134,4 +134,4 @@
   -webkit-appearance: none;
 }
   }
-}
+} 

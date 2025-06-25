@@ -12,7 +12,9 @@ import {
   X,
   GraduationCap,
   LaptopMinimalCheck,
+  Contact,
 } from "lucide-react";
+import { FaBlog } from "react-icons/fa6";
 
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/StudentDashboard" },
@@ -20,7 +22,9 @@ const menuItems = [
   { id: "test-series", label: "Test Series", icon: FileText, path: "/test-series" },
   { id: "concept-video", label: "Concept Video", icon: Play, path: "/ConceptVideos" },
   { id: "counseling", label: "Counseling Session", icon: GraduationCap, path: "/counseling" },
-  { id: "jobApplication", label : "Job Application", icon: LaptopMinimalCheck, path: "jobApplication" }
+  { id: "jobApplication", label : "Job Application", icon: LaptopMinimalCheck, path: "jobApplication" },
+  { id: "contactForm", label : "Contact Details", icon: Contact, path: "contact" },
+  { id: "blogForm", label : "Blog Forms", icon: FaBlog, path: "blog-management" }
 ];
 
 export default function Sidebar() {
