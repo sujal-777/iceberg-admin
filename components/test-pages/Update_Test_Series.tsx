@@ -2,6 +2,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { useState,useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 type itemToEdit={
     _id: string;
      categoryId:string,
@@ -14,6 +16,8 @@ type itemToEdit={
     status:string,
     description:string,
 }
+
+
 const Update_Test_Series = ({ data }: { data:itemToEdit}) => {
     const [exam,setExam]=useState([]);
       const [category,setCategory]=useState([]);
@@ -29,11 +33,29 @@ const Update_Test_Series = ({ data }: { data:itemToEdit}) => {
     description:'',
   
 });
+const router = useRouter();
+
+useEffect(() => {
+  const fetchCategoryData = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/categories');
+      const data = await res.json();
+      console.log('Fetched categories Data:', data);
+      setCategory(data);
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+fetchCategoryData ();
+}, []);
+
 
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/admin/exams');
+      const res = await fetch('http://localhost:5000/api/exams/');
       const data = await res.json();
       console.log('Fetched exam Data:', data);
       setExam(data);
@@ -47,41 +69,26 @@ useEffect(() => {
 }, []);
 
 
-useEffect(() => {
-  const fetchCategoryData = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/admin/categories');
-      const data = await res.json();
-      console.log('Fetched exam Data:', data);
-      setCategory(data);
-
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-fetchCategoryData ();
-}, []);
-
-
   
   useEffect(() => {
     console.log('data upd:',data);
     if (data) {
       setFormData({
        
-         categoryId:data.categoryId || "",
-    title: data.title || "",
-    examId: data.examId || "",
-    // questions:'',
-    duration: data.duration || "",
-    createdAt: data.createdAt || "",
-    // marks:'',
-    status:data.status || "",
-    description:data.description || "",
-      });
-    }
-  }, [data]);
+        categoryId:data.categoryId || "",
+        examId:data.examId || "",
+        name: data.name || "",
+        examId: data.examId || "",
+        totalMarks: data.totalMarks || "0",
+        // questions:'',
+        duration: data.duration || "",
+        createdAt: data.createdAt || "",
+        // marks:'',
+        status:data.status || "",
+        description:data.description || "",
+          });
+      }
+    }, [data]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -98,7 +105,7 @@ fetchCategoryData ();
      _id: data._id
   };
     try {
-      const res = await fetch(`http://localhost:5000/admin/test-series/${data._id}`, {
+      const res = await fetch(`http://localhost:5000/api/test-series/${data._id}`, {
         method: 'PUT', // or PATCH
         headers: {
           'Content-Type': 'application/json',
@@ -113,6 +120,8 @@ fetchCategoryData ();
       const jsondata = await res.json();
       console.log('Updated:', jsondata);
       alert('successfully updated')
+      router.push("/test-series");
+
     } catch (err) {
       console.error(err);
        alert('error in updating the test series')
@@ -127,7 +136,7 @@ fetchCategoryData ();
         <div className='mt-10'>
             <form onSubmit={handleUpdate}>
                 <div className='bg-white flex flex-col  gap-[20px] rounded-[20px] p-[20px]'>
-                     <label className='text-[20px] font-[500] flex flex-col gap-[10px]'>Test series Name<input type='text' name="title" value={formData.title} onChange={handleChange} placeholder='e.g. Principles and Practice of Accounting Mock Test Series'  className='max-w-[1312px] text-[18px] font-normal h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label>
+                     <label className='text-[20px] font-[500] flex flex-col gap-[10px]'>Test series Name<input type='text' name="title" value={formData.name} onChange={handleChange} placeholder='e.g. Principles and Practice of Accounting Mock Test Series'  className='max-w-[1312px] text-[18px] font-normal h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label>
                     
             <div className='grid grid-cols-2 gap-[12px] max-w-[1312px]'>
               <div className="flex flex-col gap-[10px]">
@@ -154,7 +163,7 @@ fetchCategoryData ();
                   className="block max-w-[650px] h-[45px] p-2 border border-black rounded-[10px]  focus:ring-[#0048B0] focus:border-blue-500" required>
                   {exam.map((option, idx) => (
                     <option key={idx}  value={option._id} className=''>
-                      {option.title}
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -166,7 +175,7 @@ fetchCategoryData ();
             </div>
             <div className='grid grid-cols-2 gap-[12px] max-w-[1312px]'>
                  {/* <label className='text-[20px] font-[500] flex  flex-col gap-[10px]'>Total Marks<input type='text' value={formData.marks} name="marks" onChange={handleChange} placeholder='200'  className='max-w-[650px] text-[18px] font-normal  h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label> */}
-                  <label className='text-[20px] font-[500] flex  flex-col gap-[10px]'>Status<input type='text'name="status" value={formData.status} onChange={handleChange} placeholder='40' className='max-w-[650px] text-[18px] font-normal  h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label>
+                  <label className='text-[20px] font-[500] flex  flex-col gap-[10px]'>Status<input type='text'name="status" value={formData.totalMarks} onChange={handleChange} placeholder='40' className='max-w-[650px] text-[18px] font-normal  h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></input></label>
             </div>
             <label className='text-[20px] font-[500] flex flex-col gap-[10px]'>Description<textarea name="description" value={formData.description} onChange={handleChange} placeholder='Provide a brief description of this test series....'  className='max-w-[1312px] text-[18px] font-normal h-[126px] border-[1px] border-[#000000] rounded-[10px] px-[30px]'></textarea></label>
                 </div>

@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 interface updateQuestionProps {
   questionid:string,
+  testId:string,
   fromCancelButton: (value: boolean) => void;
+
 }
-const Update_question:React.FC<updateQuestionProps> = ({ questionid,fromCancelButton}) => {
+const Update_question:React.FC<updateQuestionProps> = ({ questionid,testId,fromCancelButton}) => {
   const [questiondata,setQuestiondata]=useState();
   const router=useRouter();
    const [formData,setFormData]=useState({
@@ -24,10 +26,11 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,fromCancelBu
     useEffect(()=>{
       const fetchquestionData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/admin/questions/`);
+      const res = await fetch(`http://localhost:5000/api/test-series/${testId}/questions/${questionid}`);
       const jsondata = await res.json();
       console.log('Fetched questions Data:', jsondata);
-      const updatequestion=jsondata.find(item=>item._id===questionid);
+      // const updatequestion=jsondata.find(item=>item._id===questionid);
+      const updatequestion=jsondata
       setQuestiondata(updatequestion);
 
     } catch (error) {
@@ -42,7 +45,7 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,fromCancelBu
          if (questiondata) {
            setFormData({
       testSeriesId:questiondata.testSeriesId || '',
-      questionText:questiondata.questionText || '',
+      questionText:questiondata.question || '',
       optionA:questiondata.options[0] || '',
       optionB:questiondata.options[1] || '',
       optionC:questiondata.options[2] || '',
@@ -79,7 +82,7 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,fromCancelBu
           _id: questionid
        };
          try {
-           const res = await fetch(`http://localhost:5000/admin/questions/${questionid}`, {
+           const res = await fetch(`http://localhost:5000/api/test-series/${testId}/questions/${questionid}`, {
              method: 'PUT', // or PATCH
              headers: {
                'Content-Type': 'application/json',
@@ -93,7 +96,9 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,fromCancelBu
            } 
            const jsondata = await res.json();
            console.log('Updated:', jsondata);
+           fromCancelButton(false);
            alert('successfully updated')
+
          } catch (err) {
            console.error(err);
             alert('error in updating the test series')

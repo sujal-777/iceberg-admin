@@ -67,7 +67,7 @@ export default function TestSeriesDashboard() {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/admin/test-series');
+      const res = await fetch('http://localhost:5000/api/test-series');
       const data = await res.json();
       console.log('Fetched test series Data:', data);
       setTestSeriesData(data);
@@ -98,7 +98,7 @@ useEffect(() => {
 
   const deleteTestSeriesItem = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5000/admin/test-series/${id}`, {
+    const res = await fetch(`http://localhost:5000/api/test-series/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -111,8 +111,9 @@ useEffect(() => {
     }
 
     const data = await res.json();
-    alert('Are you sure to delete this test series')
+    alert('Test series deleted successfully')
     console.log('Deleted:', data);
+    setTestSeriesData(prevData => prevData.filter(item => item._id !== id));
 
   } catch (error) {
     console.error('Error deleting item:', error);
@@ -123,15 +124,24 @@ useEffect(() => {
   const itemsPerPage = 7
 const router=useRouter();
   const filteredData = testSeriesData.filter((item) => {
-    if (!item || !item.title || !item.examId) return false;
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.examId.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCourse = courseFilter === "all" || item.examId.toLowerCase().includes(courseFilter.toLowerCase())
-    const matchesLevel = levelFilter === "all" || item.examId.toLowerCase().includes(levelFilter.toLowerCase())
+  if (!item || !item.name || !item.examId) return false;
 
-    return matchesSearch && matchesCourse && matchesLevel
-  })
+  const matchesSearch =
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.examId.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const matchesCourse =
+    courseFilter === "all" || item.examId.toLowerCase().includes(courseFilter.toLowerCase());
+
+  const matchesLevel =
+    levelFilter === "all" || item.examId.toLowerCase().includes(levelFilter.toLowerCase());
+
+    
+  return matchesSearch && matchesCourse && matchesLevel;
+});
+console.log("filteredData",filteredData[0])
+    // console.log("filteredData"+matchesSearch + matchesCourse + matchesLevel)
+
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -287,22 +297,39 @@ if (selectedTestSeries) {
                   >
                     <TableCell>
                       <div>
-                        <div className="font-medium text-gray-900">{item.title}</div>
+                        <div className="font-medium text-gray-900">{item.name}</div>
                         <div className="text-sm text-gray-500">{}</div>
                       </div>
                     </TableCell>
-                    {testSeriesExamData.map((ex,idx)=>(
+                    <TableCell>
+                      <div>
+                        <div className="font-medium text-gray-900">{item.examId.name}</div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium text-gray-900">{item.numberOfQuestions}</div>
+                      </div>
+                    </TableCell>
+                    {/* {testSeriesExamData.map((ex,idx)=>(
                       item.examId==ex._id &&
                       <TableCell>
                       <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                         {ex.title}
                       </Badge>
                     </TableCell>
-                    ) )}
+                    ) )} */}
                     
-                    <TableCell className="font-medium"></TableCell>
+                    {/* <TableCell className="font-medium"></TableCell> */}
                     <TableCell>{item.duration}</TableCell>
-                    <TableCell>{item.createdAt}</TableCell>
+                   <TableCell>
+  {new Date(item.createdDate).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  })}
+</TableCell>
+
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <motion.button

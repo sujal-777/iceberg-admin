@@ -1,5 +1,4 @@
 "use client";
-
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -16,21 +15,36 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
+  try {
+    const res = await fetch("http://localhost:5000/api/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "pratikpaliwal2525@gmail.com",
+        password: "Pratik@123546545",
+      }),
     });
 
-    if (res?.ok) {
+    const data = await res.json();
+
+    if (res.ok) {
+      // Optional: store token in localStorage or cookie
+      // localStorage.setItem("token", data.token);
+
       router.push("/StudentDashboard");
     } else {
-      setError("Invalid email or password");
+      setError(data.message || "Login failed");
     }
-  };
+  } catch (error) {
+    setError("Something went wrong. Please try again.");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 flex items-center justify-center p-4">

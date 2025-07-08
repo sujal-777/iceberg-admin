@@ -33,7 +33,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
     const fetchquestionData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/admin/questions/${data._id}`
+          `http://localhost:5000/api/test-series/${data._id}/questions`
         );
         const jsondata = await res.json();
         console.log("Fetched questions Data:", jsondata);
@@ -50,11 +50,12 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
     const fetchdescriptivequestionData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/admin/questions/${data._id}`
+          `http://localhost:5000/api/test-series/questions/${data._id}`
         );
         const jsondata = await res.json();
         console.log("Fetched questions Data:", jsondata);
         setQuestionsData(jsondata);
+        console.log("questionsData",questionsData)
       } catch (error) {
         console.error("Error:", error);
       }
@@ -62,9 +63,10 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
 
     fetchdescriptivequestionData();
   }, [data]);
+
   const deleteQuestion = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/admin/questions/${id}`, {
+      const res = await fetch(`http://localhost:5000/api/test-series/${data._id}/questions/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -75,9 +77,12 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
         throw new Error("Failed to delete");
       }
 
-      const data = await res.json();
-      alert("Are you sure to delete this question");
-      console.log("Deleted:", data);
+      const responseData = await res.json();
+      setQuestionsData(prev =>
+        prev.filter((question) => question._id !== id)
+      );
+      alert("Question deleted successfully!");
+      console.log("Deleted:", responseData);
     } catch (error) {
       console.error("Error deleting item:", error);
     }
@@ -110,7 +115,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
       console.log(key, val);
     }
     try {
-      const res = await fetch("http://localhost:5000/admin/question-papers", {
+      const res = await fetch("http://localhost:5000/api/question-papers", {
         method: "POST",
         body: formData,
       });
@@ -122,6 +127,8 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
       const data = await res.json();
       console.log("Success:", data);
       alert("Question paper uploaded successfully!");
+       setSelectedFiles([]);       // if you're using file state
+    // setIsModalOpen(false);  
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Upload failed");
@@ -152,6 +159,11 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
     setUpdateQuestionId(id);
     setOpenUpdateQuestion(true);
   };
+  const handleCancel = () => {
+  setSelectedFiles([]);
+  // setIsModalOpen(false); // or close drawer/modal
+};
+
   const handleCloseUpdateQuestion = (
     data: boolean | ((prevState: boolean) => boolean)
   ) => {
@@ -233,14 +245,15 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
                 <tbody>
                   {questionsData.map(
                     (item, index) =>
-                      item.testSeriesId?.toString() ===
-                        data._id?.toString() && (
+                      // item._id?.toString() ===
+                      //   data._id?.toString() &&
+                      (
                         <tr
                           key={index}
                           className=" border-[1px] border-b-black "
                         >
                           <td className="  py-[16px] px-[10px] md:px-[36px]">
-                            {index + 1}.{item.questionText}
+                            {index + 1}.{item.question}
                           </td>
                           <td className="text-center md:pr-[90px]">
                             {item.marks}
@@ -296,6 +309,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
         <div className="absolute z-40 flex justify-center max-h-full inset-0 py-[25px] bg-black/30 backdrop-blur-sm w-full">
           <Update_question
             questionid={updateQuestionId}
+            testId={data._id}
             fromCancelButton={handleCloseUpdateQuestion}
           />
         </div>
@@ -303,15 +317,15 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
       {questiontype === "Descriptive" && (
         <div className="mt-[100px]">
           <div className="flex flex-col md:flex-row justify-between">
-            <div className="flex flex-col md:flex-row ">
+            <div className="flex flex-col hover:cursor-pointer md:flex-row ">
               <button
-                className={`border-[1px] border-black rounded-l-[10px] h-[40px] w-[236px] `}
+                className={`border-[1px] hover:cursor-pointer border-black rounded-l-[10px] h-[40px] w-[236px] `}
                 onClick={() => setQuestiontype("MCQ")}
               >
                 MCQ questions
               </button>
               <button
-                className={`border-[1px] border-black rounded-r-[10px] h-[40px] w-[236px] bg-[#0048B0] text-white`}
+                className={`border-[1px] hover:cursor-pointer border-black rounded-r-[10px] h-[40px] w-[236px] bg-[#0048B0] text-white`}
               >
                 Descriptive questions
               </button>
@@ -352,7 +366,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
                     or
                     <div className="w-[90px] md:w-[180px] border-[0.5px] border-[gray]"></div>
                   </div>
-                  <div className="bg-[#0048B0] rounded-[12px] text-white w-[140px] h-[45px] flex items-center justify-center courser-pointer">
+                  <div className="bg-[#0048B0] hover:cursor-pointer rounded-[12px] text-white w-[140px] h-[45px] flex items-center justify-center courser-pointer">
                     Select File
                   </div>
                 </div>
@@ -370,12 +384,12 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
                     <div className="flex justify-end gap-[10px] mt-[20px]">
                       <button
                         type="submit"
-                        className="w-[112px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-white bg-[#0048B0]"
+                        className="w-[112px] h-[45px] hover:cursor-pointer border-[1px] border-[#0048B0] rounded-[12px] text-white bg-[#0048B0]"
                         onClick={handleUpload}
                       >
                         Upload
                       </button>
-                      <button className="w-[130px] h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-[#0048B0]">
+                      <button onClick={handleCancel} className="w-[130px] hover:cursor-pointer h-[45px]  border-[1px] border-[#0048B0] rounded-[12px] text-[#0048B0]">
                         Cancel
                       </button>
                     </div>
