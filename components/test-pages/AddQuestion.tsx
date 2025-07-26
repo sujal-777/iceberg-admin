@@ -45,7 +45,7 @@ const AddQuestion:React.FC<AddQuestionProps> = ({ testseriesid,fromCancelButton}
     // Add imageUrl if required, else leave it out
   };
   try {
-    const res = await fetch(`http://localhost:5000/api/test-series/${testseriesid}/questions`, {
+    const res = await fetch(`http://localhost:8000/api/test-series/${testseriesid}/questions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

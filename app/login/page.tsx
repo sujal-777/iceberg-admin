@@ -19,14 +19,14 @@ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("http://localhost:5000/api/admin/login", {
+    const res = await fetch("http://localhost:8000/api/admin/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "pratikpaliwal2525@gmail.com",
-        password: "Pratik@123546545",
+        email : email,
+        password: password,
       }),
     });
 

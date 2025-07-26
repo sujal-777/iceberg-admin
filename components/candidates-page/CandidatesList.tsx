@@ -2,13 +2,14 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, UserPlus, Edit, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Edit, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 // Mock data for students
 const studentsData = [
@@ -87,6 +88,7 @@ const courses = [
   "CMA Final",
   "CA Foundation",
 ]
+
 const batches = ["All Batches", "2025", "2024", "2023"]
 
 export default function StudentsManagement() {
@@ -95,7 +97,6 @@ export default function StudentsManagement() {
   const [selectedBatch, setSelectedBatch] = useState("All Batches")
   const [currentPage, setCurrentPage] = useState(1)
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
-
   const itemsPerPage = 10
   const totalEntries = studentsData.length
 
@@ -107,7 +108,6 @@ export default function StudentsManagement() {
       student.id.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCourse = selectedCourse === "All Courses" || student.subject === selectedCourse
     const matchesBatch = selectedBatch === "All Batches" || student.batch === selectedBatch
-
     return matchesSearch && matchesCourse && matchesBatch
   })
 
@@ -163,12 +163,6 @@ export default function StudentsManagement() {
           <h1 className="text-3xl font-bold text-gray-900">Students</h1>
           <p className="text-gray-600 mt-1">Manage all students records and enrollment details</p>
         </div>
-        {/* <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-lg">
-            <UserPlus className="w-4 h-4 mr-2" />
-            Add New Student
-          </Button>
-        </motion.div> */}
       </motion.div>
 
       {/* Filters Section */}
@@ -185,7 +179,6 @@ export default function StudentsManagement() {
             className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
-
         <div className="flex items-center gap-3">
           <Select value={selectedCourse} onValueChange={setSelectedCourse}>
             <SelectTrigger className="w-40 border-gray-200">
@@ -199,7 +192,6 @@ export default function StudentsManagement() {
               ))}
             </SelectContent>
           </Select>
-
           <Select value={selectedBatch} onValueChange={setSelectedBatch}>
             <SelectTrigger className="w-32 border-gray-200">
               <SelectValue placeholder="Batch" />
@@ -275,6 +267,7 @@ export default function StudentsManagement() {
                   <TableCell className="text-gray-600">{student.enrollmentDate}</TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-2">
+                      <Link href={`/students/${student.id}/edit`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -282,6 +275,8 @@ export default function StudentsManagement() {
                         >
                           <Edit className="w-4 h-4 text-green-600" />
                         </motion.button>
+                      </Link>
+                      <Link href={`/students/${student.id}/view`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -289,15 +284,14 @@ export default function StudentsManagement() {
                         >
                           <Eye className="w-4 h-4 text-blue-600" />
                         </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-1 hover:bg-red-100 rounded transition-colors duration-200"
-                        >
-                          <Trash2 className="w-4 h-4 text-red-600" />
-                        </motion.button>
-
-                      
+                      </Link>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="p-1 hover:bg-red-100 rounded transition-colors duration-200"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-600" />
+                      </motion.button>
                     </div>
                   </TableCell>
                 </motion.tr>
@@ -315,7 +309,6 @@ export default function StudentsManagement() {
         <p className="text-sm text-gray-600">
           Showing {startIndex + 1} to {Math.min(endIndex, filteredStudents.length)} of {filteredStudents.length} entries
         </p>
-
         <div className="flex items-center gap-2">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
@@ -328,7 +321,6 @@ export default function StudentsManagement() {
               <ChevronLeft className="w-4 h-4" />
             </Button>
           </motion.div>
-
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <motion.div key={page} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
@@ -343,7 +335,6 @@ export default function StudentsManagement() {
               </Button>
             </motion.div>
           ))}
-
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               variant="outline"

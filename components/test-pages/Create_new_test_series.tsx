@@ -24,7 +24,7 @@ const Create_new_test_series = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = async(e) => {
+  const handleSubmit = async(e : any) => {
     e.preventDefault();
 
     const dataToSend = {
@@ -35,7 +35,7 @@ const Create_new_test_series = () => {
 
   
     try {
-    const res = await fetch("http://localhost:5000/admin/test-series", {
+    const res = await fetch("http://localhost:8000/admin/test-series", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const Create_new_test_series = () => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/admin/exams');
+      const res = await fetch('http://localhost:8000/admin/exams');
       const data = await res.json();
       console.log('Fetched exam Data:', data);
       setExam(data);
@@ -82,7 +82,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchCategoryData = async () => {
     try {
-      const res = await fetch('http://localhost:5000/admin/categories');
+      const res = await fetch('http://localhost:8000/admin/categories');
       const data = await res.json();
       console.log('Fetched exam Data:', data);
       setCategory(data);
