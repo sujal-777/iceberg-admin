@@ -8,11 +8,11 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
 export default async function AddBlogPAGE() {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   return (
     <div className="flex h-screen overflow-hidden">

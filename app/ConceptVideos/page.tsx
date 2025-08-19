@@ -7,11 +7,11 @@ import Sidebar from "@/components/Sidebar";
 import All_videos from "@/components/concept_videos/concept_videos";
 
 export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   return (
     <div className="flex h-screen overflow-hidden">

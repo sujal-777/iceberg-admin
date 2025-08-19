@@ -267,7 +267,7 @@ export default function StudentsManagement() {
                   <TableCell className="text-gray-600">{student.enrollmentDate}</TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-2">
-                      <Link href={`/students/${student.id}/edit`}>
+                      <Link href={`/candidates/students/${student.id}/edit`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -276,7 +276,7 @@ export default function StudentsManagement() {
                           <Edit className="w-4 h-4 text-green-600" />
                         </motion.button>
                       </Link>
-                      <Link href={`/students/${student.id}/view`}>
+                      <Link href={`/candidates/students/${student.id}/view`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}

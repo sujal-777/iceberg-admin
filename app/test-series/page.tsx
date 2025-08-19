@@ -48,11 +48,11 @@ import { redirect } from "next/navigation";
 import TestSeriesPageClient from "./TestSeriesPageClient";
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
   
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   return <TestSeriesPageClient />;
 }

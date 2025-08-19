@@ -7,11 +7,11 @@ import Sidebar from "@/components/Sidebar";
 import ContactManagement from "@/components/contract-form/formData";
 
 export default async function Contact() {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   return (
     <div className="flex h-screen overflow-hidden">
