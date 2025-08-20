@@ -33,7 +33,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
     const fetchquestionData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/test-series/${data._id}/questions`
+          `https://icebreg-backend2.onrender.com/api/test-series/${data._id}/questions`
         );
         const jsondata = await res.json();
         console.log("Fetched questions Data:", jsondata);
@@ -50,7 +50,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
     const fetchdescriptivequestionData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/test-series/questions/${data._id}`
+          `https://icebreg-backend2.onrender.com/api/test-series/questions/${data._id}`
         );
         const jsondata = await res.json();
         console.log("Fetched questions Data:", jsondata);
@@ -66,7 +66,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
 
   const deleteQuestion = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/test-series/${data._id}/questions/${id}`, {
+      const res = await fetch(`https://icebreg-backend2.onrender.com/api/test-series/${data._id}/questions/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
       console.log(key, val);
     }
     try {
-      const res = await fetch("http://localhost:8000/api/question-papers", {
+      const res = await fetch("https://icebreg-backend2.onrender.com/api/question-papers", {
         method: "POST",
         body: formData,
       });

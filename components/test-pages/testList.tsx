@@ -67,7 +67,7 @@ export default function TestSeriesDashboard() {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/test-series');
+      const res = await fetch('https://icebreg-backend2.onrender.com/api/test-series');
       const data = await res.json();
       console.log('Fetched test series Data:', data);
       setTestSeriesData(data);
@@ -83,7 +83,7 @@ useEffect(() => {
 useEffect(() => {
   const fetchExamData = async () => {
     try {
-      const res = await fetch('http://localhost:8000/admin/exams');
+      const res = await fetch('https://icebreg-backend2.onrender.com/admin/exams');
       const data = await res.json();
       console.log('Fetched exam Data:', data);
       setTestSeriesExamData(data);
@@ -98,7 +98,7 @@ useEffect(() => {
 
   const deleteTestSeriesItem = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:8000/api/test-series/${id}`, {
+    const res = await fetch(`https://icebreg-backend2.onrender.com/api/test-series/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,testId,fromC
     useEffect(()=>{
       const fetchquestionData = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/test-series/${testId}/questions/${questionid}`);
+      const res = await fetch(`https://icebreg-backend2.onrender.com/api/test-series/${testId}/questions/${questionid}`);
       const jsondata = await res.json();
       console.log('Fetched questions Data:', jsondata);
       // const updatequestion=jsondata.find(item=>item._id===questionid);
@@ -82,7 +82,7 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,testId,fromC
           _id: questionid
        };
          try {
-           const res = await fetch(`http://localhost:8000/api/test-series/${testId}/questions/${questionid}`, {
+           const res = await fetch(`https://icebreg-backend2.onrender.com/api/test-series/${testId}/questions/${questionid}`, {
              method: 'PUT', // or PATCH
              headers: {
                'Content-Type': 'application/json',

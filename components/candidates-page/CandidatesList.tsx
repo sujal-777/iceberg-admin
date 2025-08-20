@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Search, Edit, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,73 +10,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-
-// Mock data for students
-const studentsData = [
-  {
-    id: "STU20250512",
-    name: "Priya Sharma",
-    email: "priya.sharma@example.com",
-    subject: "CA Final",
-    batch: "2025",
-    enrollmentDate: "May 1, 2025",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250513",
-    name: "Rahul Gupta",
-    email: "rahul.gupta@example.com",
-    subject: "CS Executive",
-    batch: "2025",
-    enrollmentDate: "April 15, 2025",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250514",
-    name: "Neha Patel",
-    email: "neha.patel@example.com",
-    subject: "CMA Intermediate",
-    batch: "2025",
-    enrollmentDate: "March 10, 2025",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250515",
-    name: "Arjun Kapoor",
-    email: "arjun.kapoor@example.com",
-    subject: "CA Inter",
-    batch: "2025",
-    enrollmentDate: "February 5, 2025",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250516",
-    name: "Meera Singh",
-    email: "meera.singh@example.com",
-    subject: "CS Professional",
-    batch: "2025",
-    enrollmentDate: "January 20, 2025",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250517",
-    name: "Vikram Desai",
-    email: "vikram.desai@example.com",
-    subject: "CMA Final",
-    batch: "2024",
-    enrollmentDate: "December 15, 2024",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: "STU20250518",
-    name: "Ananya Reddy",
-    email: "ananya.reddy@example.com",
-    subject: "CA Foundation",
-    batch: "2024",
-    enrollmentDate: "November 5, 2024",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-]
 
 const courses = [
   "All Courses",
@@ -98,10 +31,47 @@ export default function StudentsManagement() {
   const [currentPage, setCurrentPage] = useState(1)
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
   const itemsPerPage = 10
-  const totalEntries = studentsData.length
 
-  // Filter students based on search and filters
-  const filteredStudents = studentsData.filter((student) => {
+  const [students, setStudents] = useState<any[]>([]) // ✅ fetched students
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await fetch("https://icebreg-backend2.onrender.com/api/apply/exam-attempts") // ✅ API route
+        const data = await res.json()
+
+        // 🔹 Transform backend UserExam → StudentData format
+        const transformed = data.map((exam: any, index: number) => ({
+          id: exam.userId, // e.g. STU20250001
+          testId: exam.testId || "N/A",
+          name: exam.userName || "Unknown",
+          email: exam.userEmail || "N/A",
+          subject: exam.testName || "N/A",
+          batch: exam.batch || "2025", // ⚡ Add `batch` in your User schema if needed
+          enrollmentDate: exam.examDate
+            ? new Date(exam.examDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : "N/A",
+          avatar: "/placeholder.svg?height=40&width=40",
+          score: exam.score,
+          totalMarks: exam.totalMarks,
+          status: exam.status,
+        }))
+
+        setStudents(transformed)
+      } catch (err) {
+        console.error("Failed to fetch students:", err)
+      }
+    }
+
+    fetchStudents()
+  }, [])
+
+  // ✅ Use fetched students instead of old `studentsData`
+  const filteredStudents = students.filter((student) => {
     const matchesSearch =
       student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -267,7 +237,7 @@ export default function StudentsManagement() {
                   <TableCell className="text-gray-600">{student.enrollmentDate}</TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-2">
-                      <Link href={`/candidates/students/${student.id}/edit`}>
+                      <Link href={`/candidates/students/${student.id}/${student.testId}/edit`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -276,7 +246,7 @@ export default function StudentsManagement() {
                           <Edit className="w-4 h-4 text-green-600" />
                         </motion.button>
                       </Link>
-                      <Link href={`/candidates/students/${student.id}/view`}>
+                      <Link href={`/candidates/students/${student.id}/${student.testId}/view`}>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}

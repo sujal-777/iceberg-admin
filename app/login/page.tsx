@@ -19,7 +19,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("http://localhost:8000/api/admin/login", {
+    const res = await fetch("https://icebreg-backend2.onrender.com/api/admin/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

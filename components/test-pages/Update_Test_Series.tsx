@@ -37,7 +37,7 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/categories");
+        const res = await fetch("https://icebreg-backend2.onrender.com/api/categories");
         const data = await res.json();
         console.log("Fetched categories Data:", data);
         setCategory(data);
@@ -52,7 +52,7 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/exams/");
+        const res = await fetch("https://icebreg-backend2.onrender.com/api/exams/");
         const data = await res.json();
         console.log("Fetched exam Data:", data);
         setExam(data);
@@ -102,7 +102,7 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
     };
     try {
       const res = await fetch(
-        `http://localhost:8000/api/test-series/${data._id}`,
+        `https://icebreg-backend2.onrender.com/api/test-series/${data._id}`,
         {
           method: "PUT", // or PATCH
           headers: {
