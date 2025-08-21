@@ -10,13 +10,15 @@ export default async function StudentLayout({
   params,
 }: {
   children: React.ReactNode
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
   // const session = await getServerSession(authOptions)
 
   // if (!session || !session.user) {
   //   redirect("/login")
   // }
+
+  const { id } = await params
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -29,7 +31,7 @@ export default async function StudentLayout({
       <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
         <Navbar />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
-          <StudentBreadcrumb studentId={params.id} />
+          <StudentBreadcrumb studentId={id} />
           {children}
         </main>
       </div>
