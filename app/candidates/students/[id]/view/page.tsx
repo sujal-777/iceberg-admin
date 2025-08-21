@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Download, Printer, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -48,7 +49,8 @@ interface StudentData {
     }[];
   }[];
 }
-export default function StudentResultsView({ params }: { params: { id: string } }) {
+export default function StudentResultsView() {
+  const { id } = useParams<{ id: string }>()
   // const [student, setStudent] = useState(studentData)
 
   // useEffect(() => {
@@ -61,7 +63,7 @@ export default function StudentResultsView({ params }: { params: { id: string } 
     const fetchStudentData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`https://icebreg-backend2.onrender.com/api/apply/student-results/${params.id}/${params.testId}`);
+        const res = await axios.get(`https://icebreg-backend2.onrender.com/api/apply/student-results/${id}`);
         setStudentData(res.data);  // assuming backend returns { studentData }
         setError(null);
       } catch (err: any) {
@@ -71,13 +73,14 @@ export default function StudentResultsView({ params }: { params: { id: string } 
       }
     };
 
-    if (params.id) {
+    if (id) {
       fetchStudentData();
     }
-  }, [params.id]);
+  }, [id]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
+  const student = studentData as any;
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {

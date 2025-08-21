@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Download, Printer, Mail, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -35,17 +36,19 @@ const studentData = {
   },
 }
 
-export default function StudentResultsEdit({ params }: { params: { id: string ; testId:string} }) {
+export default function StudentResultsEdit() {
+  const params = useParams<{ id: string; testId: string }>()
   const [student, setStudent] = useState(studentData)
-  const [editedDescriptive, setEditedDescriptive] = useState({
-    totalQuestions: "",
-    avgScore: "",
-    attempted: "",
-    notAttempted: "",
-    // totalQuestions: 10,
-    // avgScore: 7.2,
-    // attempted: 10,
-    // notAttempted: 0,
+  const [editedDescriptive, setEditedDescriptive] = useState<{
+    totalQuestions: number
+    avgScore: number
+    attempted: number
+    notAttempted: number
+  }>({
+    totalQuestions: 0,
+    avgScore: 0,
+    attempted: 0,
+    notAttempted: 0,
   })
   const [isEditing, setIsEditing] = useState(false)
 
@@ -94,10 +97,10 @@ useEffect(() => {
 
       setStudent(mappedStudent)
       setEditedDescriptive({
-        totalQuestions: String(mappedStudent.descriptive.totalQuestions),
-        avgScore: String(mappedStudent.descriptive.avgScore),
-        attempted: String(mappedStudent.descriptive.attempted),
-        notAttempted: String(mappedStudent.descriptive.notAttempted),
+        totalQuestions: mappedStudent.descriptive.totalQuestions,
+        avgScore: mappedStudent.descriptive.avgScore,
+        attempted: mappedStudent.descriptive.attempted,
+        notAttempted: mappedStudent.descriptive.notAttempted,
       })
     } catch (err) {
       console.error("Error fetching student result:", err)

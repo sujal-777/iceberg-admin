@@ -216,7 +216,7 @@ export default function StudentsManagement() {
                           <AvatarFallback className="bg-orange-100 text-orange-600 font-medium">
                             {student.name
                               .split(" ")
-                              .map((n) => n[0])
+                              .map((n: string) => n[0] ?? "")
                               .join("")}
                           </AvatarFallback>
                         </Avatar>

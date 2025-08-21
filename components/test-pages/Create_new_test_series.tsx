@@ -2,10 +2,13 @@
 import React, { useState,useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+type ExamOption = { _id: string; title: string }
+type CategoryOption = { _id: string; name: string }
+
 const Create_new_test_series = () => {
   const router=useRouter();
-  const [exam,setExam]=useState([]);
-  const [category,setCategory]=useState([]);
+  const [exam,setExam]=useState<ExamOption[]>([]);
+  const [category,setCategory]=useState<CategoryOption[]>([]);
   const [formData,setFormData]=useState({
     categoryId:"",
     title: "",
@@ -113,7 +116,7 @@ fetchCategoryData ();
                 </label>
                 <select
                   id="select" name='categoryId' value={formData.categoryId} onChange={handleChange} required
-                  className="block max-w-[650px] h-[45px] p-2 border border-black rounded-[10px]  focus:ring-[#0048B0] focus:border-blue-500" required>
+                  className="block max-w-[650px] h-[45px] p-2 border border-black rounded-[10px]  focus:ring-[#0048B0] focus:border-blue-500">
                   {category.map((option, idx) => (
                     <option key={idx}  value={option._id} className=''>
                       {option.name}

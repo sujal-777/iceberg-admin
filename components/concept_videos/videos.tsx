@@ -6,10 +6,21 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { useState,useEffect } from 'react'
 import { IoMdPlay } from "react-icons/io";
+type VideoItem = {
+  id: number | string;
+  duration?: string;
+  video_url?: string;
+  specialization?: string;
+  short_desc?: string;
+  lecturer_image?: string;
+  lecturer_name?: string;
+  subject?: string;
+};
+
 const videos = () => {
-    const [videos, setVideos] = useState([]);
+    const [videos, setVideos] = useState<VideoItem[]>([]);
     const [categorySelection,setCategorySelection]=useState('All Videos');
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState<Array<number | string>>([]);
   const [selectAll, setSelectAll] = useState(false);
   
 
@@ -57,16 +68,16 @@ useEffect(()=>{
     if (selectAll) {
       setSelectedItems([]); // Unselect all
     } else {
-      setSelectedItems(videos.map((item,index) => item.id)); // Select all
+      setSelectedItems(videos.map((item) => item.id)); // Select all
     }
     setSelectAll(!selectAll);
   };
 
-  const handleSelectItem = (index) => {
-    if (selectedItems.includes(index)) {
-      setSelectedItems(selectedItems.filter((i) => i !== index));
+  const handleSelectItem = (id: number | string) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter((i) => i !== id));
     } else {
-      setSelectedItems([...selectedItems, index]);
+      setSelectedItems([...selectedItems, id]);
     }
   };
   return (
@@ -106,7 +117,7 @@ useEffect(()=>{
                   <p className="text-[15px] font-[300] my-[20px]">{item.short_desc}</p>
                   <div className="flex justify-between items-center">
                   <div className="flex items-center gap-[10px]">
-                    <Image src={item.lecturer_image} alt="name" width={60} height={60} className="rounded-full"></Image>
+                    <Image src={item.lecturer_image || "/placeholder.svg"} alt="name" width={60} height={60} className="rounded-full"></Image>
                     <div>
                       <p className="text-[15px] font-[500]">{item.lecturer_name}</p>
                       <p className="text-[12px]">{item.subject}</p>

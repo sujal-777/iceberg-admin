@@ -17,15 +17,21 @@ type TestSeriesItem = {
   createdAt: string;
   testSeriesId: string;
 };
+type QuestionItem = {
+  _id: string;
+  question: string;
+  marks: number;
+};
+
 const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
   const [questiontype, setQuestiontype] = useState("MCQ");
   const [openAddQuestion, setOpenAddQuestion] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [questions, setQuestions] = useState([]);
-  const [questionsData, setQuestionsData] = useState([]);
+  const [questionsData, setQuestionsData] = useState<QuestionItem[]>([]);
   const [openUpdateQuestion, setOpenUpdateQuestion] = useState(false);
   const [updateQuestionId, setUpdateQuestionId] = useState<string | null>(null);
   useEffect(() => {
@@ -89,12 +95,12 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
   };
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let file = e.target.files?.[0];
+    const file = e.target.files?.[0];
     // const fileList = Array.from(file);
     // console.log('Selected files:', fileList);
 
-    setSelectedFiles((prev) => [...prev, file]);
     if (file) {
+      setSelectedFiles((prev) => [...prev, file]);
       const fileUrl = URL.createObjectURL(file);
       console.log("url:", fileUrl);
       setPdfUrl(fileUrl);
@@ -144,11 +150,15 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
   ) => {
     setOpenAddQuestion(false);
   };
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFiles(e.dataTransfer.files);
+      // simulate a change event for handleFiles
+      const inputLikeEvent = {
+        target: { files: e.dataTransfer.files },
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFiles(inputLikeEvent);
       e.dataTransfer.clearData();
     }
   };
@@ -305,7 +315,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
           />
         </div>
       )}
-      {openUpdateQuestion === true && (
+      {openUpdateQuestion === true && updateQuestionId && (
         <div className="absolute z-40 flex justify-center max-h-full inset-0 py-[25px] bg-black/30 backdrop-blur-sm w-full">
           <Update_question
             questionid={updateQuestionId}
@@ -347,7 +357,7 @@ const Adding_questions = ({ data }: { data: TestSeriesItem }) => {
                   }}
                   onDragLeave={() => setIsDragging(false)}
                   onDrop={handleDrop}
-                  onClick={() => inputRef.current.click()}
+                  onClick={() => inputRef.current?.click()}
                 >
                   <input
                     ref={inputRef}

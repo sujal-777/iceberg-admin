@@ -1,6 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+// Removed unused auth imports
 // import DashboardPages from "@/components/student_admin/dashboard";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";

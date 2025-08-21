@@ -9,8 +9,17 @@ interface updateQuestionProps {
   fromCancelButton: (value: boolean) => void;
 
 }
+type QuestionData = {
+  testSeriesId?: string;
+  question?: string;
+  options: string[];
+  correctAnswer?: string;
+  marks?: number | string;
+  createdAt?: string;
+};
+
 const Update_question:React.FC<updateQuestionProps> = ({ questionid,testId,fromCancelButton}) => {
-  const [questiondata,setQuestiondata]=useState();
+  const [questiondata,setQuestiondata]=useState<QuestionData | null>(null);
   const router=useRouter();
    const [formData,setFormData]=useState({
      testSeriesId:'',
@@ -46,13 +55,13 @@ const Update_question:React.FC<updateQuestionProps> = ({ questionid,testId,fromC
            setFormData({
       testSeriesId:questiondata.testSeriesId || '',
       questionText:questiondata.question || '',
-      optionA:questiondata.options[0] || '',
-      optionB:questiondata.options[1] || '',
-      optionC:questiondata.options[2] || '',
-      optionD:questiondata.options[3] || '',
+      optionA:questiondata.options?.[0] || '',
+      optionB:questiondata.options?.[1] || '',
+      optionC:questiondata.options?.[2] || '',
+      optionD:questiondata.options?.[3] || '',
       correctAnswer:questiondata.correctAnswer || '',
-      marks: questiondata.marks || '',
-       createdAt: questiondata.createdAt || ''
+      marks: String(questiondata.marks ?? ''),
+      createdAt: questiondata.createdAt || ''
             
            });
          }

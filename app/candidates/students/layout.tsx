@@ -1,7 +1,5 @@
 import type React from "react"
-import { getServerSession } from "next-auth"
-import { authOptions } from "../../api/auth/[...nextauth]/route"
-import { redirect } from "next/navigation"
+// Removed unused auth imports
 import Navbar from "@/components/Navbar"
 import Sidebar from "@/components/Sidebar"
 import Link from "next/link"

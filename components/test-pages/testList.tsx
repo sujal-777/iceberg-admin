@@ -56,13 +56,22 @@ const chartData = {
   ],
 }
 
+type TestSeriesItem = {
+  _id: string;
+  name: string;
+  examId: { name: string } | string;
+  numberOfQuestions: number;
+  duration: number | string;
+  createdDate: string;
+};
+
 export default function TestSeriesDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [courseFilter, setCourseFilter] = useState("all")
   const [levelFilter, setLevelFilter] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
-  const [testSeriesData,setTestSeriesData]=useState([]);
-  const [testSeriesExamData,setTestSeriesExamData]=useState([]);
+  const [testSeriesData,setTestSeriesData]=useState<TestSeriesItem[]>([]);
+  const [testSeriesExamData,setTestSeriesExamData]=useState<any[]>([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -113,7 +122,7 @@ useEffect(() => {
     const data = await res.json();
     alert('Test series deleted successfully')
     console.log('Deleted:', data);
-    setTestSeriesData(prevData => prevData.filter(item => item._id !== id));
+    setTestSeriesData(prevData => prevData.filter((item) => item._id !== id));
 
   } catch (error) {
     console.error('Error deleting item:', error);
@@ -124,21 +133,22 @@ useEffect(() => {
   const itemsPerPage = 7
 const router=useRouter();
   const filteredData = testSeriesData.filter((item) => {
-  if (!item || !item.name || !item.examId) return false;
+    if (!item || !item.name || !item.examId) return false;
 
-  const matchesSearch =
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.examId.toLowerCase().includes(searchTerm.toLowerCase());
+    const examName = typeof item.examId === "string" ? item.examId : item.examId.name;
 
-  const matchesCourse =
-    courseFilter === "all" || item.examId.toLowerCase().includes(courseFilter.toLowerCase());
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      examName.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const matchesLevel =
-    levelFilter === "all" || item.examId.toLowerCase().includes(levelFilter.toLowerCase());
+    const matchesCourse =
+      courseFilter === "all" || examName.toLowerCase().includes(courseFilter.toLowerCase());
 
-    
-  return matchesSearch && matchesCourse && matchesLevel;
-});
+    const matchesLevel =
+      levelFilter === "all" || examName.toLowerCase().includes(levelFilter.toLowerCase());
+
+    return matchesSearch && matchesCourse && matchesLevel;
+  });
 console.log("filteredData",filteredData[0])
     // console.log("filteredData"+matchesSearch + matchesCourse + matchesLevel)
 
@@ -303,7 +313,7 @@ if (selectedTestSeries) {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium text-gray-900">{item.examId.name}</div>
+                        <div className="font-medium text-gray-900">{typeof item.examId === "string" ? item.examId : item.examId.name}</div>
                       </div>
                     </TableCell>
                     <TableCell>

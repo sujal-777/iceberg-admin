@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import DashboardPages from "@/components/student_admin/dashboard";
 import Navbar from "@/components/Navbar";

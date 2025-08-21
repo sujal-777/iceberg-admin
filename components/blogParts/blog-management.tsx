@@ -59,7 +59,7 @@ export default function BlogManagement() {
         (blog) =>
           blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           blog.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          blog.Type?.toLowerCase().includes(searchTerm.toLowerCase()),
+          blog.type?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
 
@@ -292,9 +292,9 @@ export default function BlogManagement() {
 
                   <CardContent className="p-4">
                     {/* Blog Type Badge */}
-                    {blog.Type && (
+                    {blog.type && (
                       <Badge variant="secondary" className="mb-2 text-xs">
-                        {blog.Type}
+                        {blog.type}
                       </Badge>
                     )}
 

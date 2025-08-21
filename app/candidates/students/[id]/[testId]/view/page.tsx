@@ -13,26 +13,30 @@ type PageProps = {
 };
 
 interface StudentData {
-  id: string;
-  name: string;
-  email: string;
-  course: string;
-  attemptDate: string;
-  totalScore: number;
-  maxScore: number;
-  grade: string;
-  percentage: number;
-  multipleChoice: {
-    total: number;
-    accuracy: number;
-    correct: number;
-    incorrect: number;
+  studentInfo: {
+    id: string;
+    name: string;
+    email: string;
+    subject?: string;
   };
-  descriptive: {
-    totalQuestions: number;
-    avgScore: number;
-    attempted: number;
-    notAttempted: number;
+  testResult: {
+    testName: string;
+    examDate?: string;
+    score: number;
+    totalMarks: number;
+    status?: string;
+    mcqSummary: {
+      totalMCQs: number;
+      accuracy: number | string;
+      correct: number;
+      incorrect: number;
+    };
+    descriptiveSummary: {
+      totalQuestions: number;
+      avgScore: number | string;
+      attempted: number;
+      notAttempted: number;
+    };
   };
 }
 
@@ -129,7 +133,7 @@ export default function StudentResultsView({ params }: PageProps) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Attempt Date</p>
-                    <p className="font-medium">{student.attemptDate ? student.attemptDate : "N/A"}</p>
+                    <p className="font-medium">{student.testResult.examDate ? new Date(student.testResult.examDate).toLocaleDateString() : "N/A"}</p>
                   </div>
                 </div>
               </div>
@@ -139,13 +143,13 @@ export default function StudentResultsView({ params }: PageProps) {
                     <p className="text-3xl font-bold">{student.testResult.mcqSummary.accuracy}</p>
                   </div>
                   <Progress
-                    value={student.percentage}
+                    value={(student.testResult.score / student.testResult.totalMarks) * 100}
                     className="h-32 w-32 rounded-full [&>div]:rounded-full [&>div]:border-8 [&>div]:border-purple-500 bg-gray-100"
                   />
                 </div>
                 <div className="mt-4 text-center">
                   <p className="text-lg font-semibold">
-                    Total Score: {student.testResult.totalMarks}/{student.testResult.score}
+                    Total Score: {student.testResult.score}/{student.testResult.totalMarks}
                   </p>
                   {/* <p className="text-sm text-gray-600">Grade: {student.grade}</p> */}
                   <p className="text-sm text-gray-600">

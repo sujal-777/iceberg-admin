@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 
-// Default redirect to view mode
-export default function StudentDefaultPage({ params }: { params: { id: string } }) {
-  redirect(`/candidates/students/${params.id}/view`)
+// Default list page or redirect logic goes here
+export default function StudentDefaultPage() {
+  redirect(`/candidates`)
 }

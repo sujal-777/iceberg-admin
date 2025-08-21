@@ -42,9 +42,7 @@
 //     </div>
 //   );
 // }
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+// Removed unused auth imports
 import TestSeriesPageClient from "./TestSeriesPageClient";
 
 export default async function DashboardPage() {

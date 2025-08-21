@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Download, Printer, Mail, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -35,7 +36,8 @@ const studentData = {
   },
 }
 
-export default function StudentResultsEdit({ params }: { params: { id: string } }) {
+export default function StudentResultsEdit() {
+  const { id } = useParams<{ id: string }>()
   const [student, setStudent] = useState(studentData)
   const [editedDescriptive, setEditedDescriptive] = useState({
     totalQuestions: 10,
@@ -46,9 +48,11 @@ export default function StudentResultsEdit({ params }: { params: { id: string } 
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    setStudent({ ...studentData, id: params.id })
+    if (id) {
+      setStudent({ ...studentData, id: String(id) })
+    }
     setEditedDescriptive(studentData.descriptive)
-  }, [params.id])
+  }, [id])
 
   const handleDescriptiveChange = (field: string, value: string) => {
     const numValue = field === "avgScore" ? Number.parseFloat(value) : Number.parseInt(value)

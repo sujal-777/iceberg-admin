@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean; // allows rendering as another component (e.g. Link)
-  variant?: "default" | "destructive" | "outline";
+  variant?: "default" | "destructive" | "outline" | "ghost";
   size?: "default" | "sm" | "lg";
 }
 
@@ -12,6 +12,7 @@ const variants = {
   default: "bg-blue-600 text-white hover:bg-blue-700",
   destructive: "bg-red-600 text-white hover:bg-red-700",
   outline: "border border-gray-300 text-gray-700 hover:bg-gray-100",
+  ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
 };
 
 const sizes = {

@@ -15,11 +15,12 @@ type itemToEdit = {
   // marks:'',
   status: string;
   description: string;
+  totalMarks?: number | string;
 };
 
 const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
-  const [exam, setExam] = useState([]);
-  const [category, setCategory] = useState([]);
+  const [exam, setExam] = useState<any[]>([]);
+  const [category, setCategory] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     categoryId: "",
     name: "",
@@ -70,9 +71,8 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
       setFormData({
         categoryId: data.categoryId || "",
         examId: data.examId || "",
-        name: data.name || "",
-        examId: data.examId || "",
-        totalMarks: data.totalMarks || "0",
+        name: (data as any).name || (data as any).title || "",
+        totalMarks: String((data as any).totalMarks ?? "0"),
         // questions:'',
         duration: data.duration || "",
         createdAt: data.createdAt || "",
@@ -155,7 +155,6 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
                   name="categoryId"
                   value={formData.categoryId}
                   onChange={handleChange}
-                  required
                   className="block max-w-[650px] h-[45px] p-2 border border-black rounded-[10px]  focus:ring-[#0048B0] focus:border-blue-500"
                   required
                 >
@@ -208,7 +207,7 @@ const Update_Test_Series = ({ data }: { data: itemToEdit }) => {
                 <input
                   type="text"
                   name="status"
-                  value={formData.totalMarks}
+                  value={formData.status}
                   onChange={handleChange}
                   placeholder="40"
                   className="max-w-[650px] text-[18px] font-normal  h-[45px] border-[1px] border-[#000000] rounded-[10px] px-[30px]"

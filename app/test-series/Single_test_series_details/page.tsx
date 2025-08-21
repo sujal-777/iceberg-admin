@@ -4,8 +4,18 @@ import Sidebar from '@/components/Sidebar'
 import Navbar from '@/components/Navbar'
 import Adding_questions from '@/components/test-pages/Adding_questions'
 import { useEffect } from 'react'
+type TestSeriesItem = {
+  _id: string;
+  title: string;
+  examId: string;
+  questions: number;
+  duration: string;
+  createdAt: string;
+  testSeriesId: string;
+};
+
 const page = () => {
-   const [testSeries,setTestSeries] = useState(null);
+   const [testSeries,setTestSeries] = useState<TestSeriesItem | null>(null);
 
   useEffect(() => {
     const data = localStorage.getItem('testseriesData');
@@ -28,7 +38,7 @@ const page = () => {
           <div className="flex flex-col flex-1 md:ml-[305px] h-full overflow-y-auto">
             <Navbar />
             <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50">
-             <Adding_questions data={testSeries}/>
+             {testSeries && <Adding_questions data={testSeries}/>} 
             </main>
           </div>
         </div>
