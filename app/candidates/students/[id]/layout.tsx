@@ -1,5 +1,4 @@
 import type React from "react"
-// Removed unused auth imports
 import Navbar from "@/components/Navbar"
 import Sidebar from "@/components/Sidebar"
 import Link from "next/link"
@@ -10,15 +9,9 @@ export default async function StudentLayout({
   params,
 }: {
   children: React.ReactNode
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  // const session = await getServerSession(authOptions)
-
-  // if (!session || !session.user) {
-  //   redirect("/login")
-  // }
-
-  const { id } = params
+  const { id } = await params
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -54,3 +47,5 @@ function StudentBreadcrumb({ studentId }: { studentId: string }) {
     </div>
   )
 }
+
+
