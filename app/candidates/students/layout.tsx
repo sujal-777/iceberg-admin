@@ -10,7 +10,7 @@ export default async function StudentLayout({
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ id: string }>
+  params: { id: string }
 }) {
   // const session = await getServerSession(authOptions)
 
@@ -18,7 +18,7 @@ export default async function StudentLayout({
   //   redirect("/login")
   // }
 
-  const { id } = await params
+  const { id } = params
 
   return (
     <div className="flex h-screen overflow-hidden">
